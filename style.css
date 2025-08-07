@@ -1,37 +1,85 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 body {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(to right, #e0f7fa, #ffffff);
-  min-height: 100vh;
+  font-family: "Segoe UI", sans-serif;
+  background: #f9fafb;
+  margin: 0;
+  min-height: 10vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 10px;
 }
 
-h1 {
-  color: #006064;
-  margin-bottom: 30px;
+.container {
+  max-width: 800px;
+  margin: 2rem auto;
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1,
+h2 {
   text-align: center;
+  color: #1f2937;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+
+input {
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 1rem;
 }
 
 button {
-  background-color: #00796b;
-  color: white;
-  padding: 12px 24px;
-  font-size: 18px;
+  padding: 0.5rem;
+  font-weight: bold;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  background-color: #2563eb;
+  color: white;
 }
 
 button:hover {
-  background-color: #004d40;
+  background-color: #1d4ed8;
+}
+
+#listaParticipantes {
+  list-style: none;
+  padding: 0;
+}
+
+#listaParticipantes li {
+  padding: 0.5rem;
+  background: #f3f4f6;
+  margin-bottom: 0.5rem;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.btn-eliminar {
+  background-color: #ef4444;
+  padding: 4px 10px;
+  font-size: 0.85rem;
+  border-radius: 4px;
+}
+
+.btn-eliminar:hover {
+  background-color: #dc2626;
+}
+
+.acciones {
+  text-align: center;
+  margin-bottom: 1rem;
 }

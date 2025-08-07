@@ -1,43 +1,77 @@
 const torneo = "Torneo de Invierno";
-let participantes = [];
 const maxParticipantes = 5;
+let participantes = JSON.parse(localStorage.getItem("participantes")) || [];
 
-function iniciarRegistro() {
-  alert("Bienvenido al " + torneo);
-  let continuar = confirm("¿Querés registrar participantes?");
+const form = document.getElementById("registroForm");
+const nombreInput = document.getElementById("nombre");
+const categoriaInput = document.getElementById("categoria");
+const carnetInput = document.getElementById("carnet");
+const listaParticipantes = document.getElementById("listaParticipantes");
+const reiniciarBtn = document.getElementById("reiniciarBtn");
 
-  while (continuar && participantes.length < maxParticipantes) {
-    const nombre = prompt("Ingrese el nombre del jugador:")?.trim();
-    const categoria = prompt("Ingrese la categoría:")?.trim();
-    const carnet = prompt("Ingrese el número de carnet:")?.trim();
+function guardarEnLocalStorage() {
+  localStorage.setItem("participantes", JSON.stringify(participantes));
+}
 
-    if (!nombre || !categoria || !carnet) {
-      alert("Debés completar todos los campos.");
-    } else if (participantes.some((p) => p.carnet === carnet)) {
-      alert("Este número de carnet ya fue ingresado.");
-    } else {
-      const jugador = { nombre, categoria, carnet };
-      participantes.push(jugador);
-      console.log("Jugador registrado:", jugador);
-      alert(`Jugador ${nombre} registrado con éxito.`);
-    }
+function eliminarJugador(index) {
+  participantes.splice(index, 1);
+  guardarEnLocalStorage();
+  mostrarParticipantes();
+}
 
-    if (participantes.length < maxParticipantes) {
-      continuar = confirm("¿Deseás registrar otro?");
-    } else {
-      alert("Se alcanzó el máximo de participantes.");
-    }
+function mostrarParticipantes() {
+  listaParticipantes.innerHTML = "";
+
+  if (participantes.length === 0) {
+    listaParticipantes.innerHTML = "<li>No hay participantes registrados.</li>";
+    return;
   }
 
-  mostrarResumen();
+  participantes.forEach((p, index) => {
+    const li = document.createElement("li");
+    li.textContent = `${p.nombre} - Categoría ${p.categoria} - Carnet: ${p.carnet}`;
+
+    const eliminarBtn = document.createElement("button");
+    eliminarBtn.textContent = "Eliminar";
+    eliminarBtn.className = "btn-eliminar";
+    eliminarBtn.onclick = () => eliminarJugador(index);
+
+    li.appendChild(eliminarBtn);
+    listaParticipantes.appendChild(li);
+  });
 }
 
-function mostrarResumen() {
-  console.log("===== Resumen de Participantes =====");
-  participantes.forEach((p) => {
-    console.log(
-      `• ${p.nombre} - Categoría ${p.categoria} - Carnet: ${p.carnet}`
-    );
-  });
-  alert("Fin del registro. Consultá la consola para ver el resumen.");
-}
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  if (participantes.length >= maxParticipantes) {
+    alert("Se alcanzó el máximo de participantes.");
+    return;
+  }
+
+  const nombre = nombreInput.value.trim();
+  const categoria = categoriaInput.value.trim();
+  const carnet = carnetInput.value.trim();
+
+  if (!nombre || !categoria || !carnet) return;
+
+  if (participantes.some((p) => p.carnet === carnet)) {
+    alert("Ese número de carnet ya fue ingresado.");
+    return;
+  }
+
+  participantes.push({ nombre, categoria, carnet });
+  guardarEnLocalStorage();
+  mostrarParticipantes();
+  form.reset();
+});
+
+reiniciarBtn.addEventListener("click", () => {
+  if (confirm("¿Estás seguro que querés reiniciar el registro?")) {
+    participantes = [];
+    guardarEnLocalStorage();
+    mostrarParticipantes();
+  }
+});
+
+document.addEventListener("DOMContentLoaded", mostrarParticipantes);
