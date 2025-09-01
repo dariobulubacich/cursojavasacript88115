@@ -19,8 +19,7 @@ body {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-h1,
-h2 {
+h1 {
   text-align: center;
   color: #1f2937;
 }
@@ -30,27 +29,28 @@ form {
   flex-direction: column;
   gap: 10px;
   margin-bottom: 1rem;
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.2);
 }
 
-input {
-  padding: 0.5rem;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  font-size: 1rem;
-}
-
+input,
 button {
-  padding: 0.5rem;
-  font-weight: bold;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  background-color: #2563eb;
-  color: white;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
 }
-
+button {
+  cursor: pointer;
+  background: #007bff;
+  color: white;
+  border: none;
+  transition: 0.3s;
+}
 button:hover {
-  background-color: #1d4ed8;
+  background: #0056b3;
 }
 
 #listaParticipantes {
@@ -59,13 +59,14 @@ button:hover {
 }
 
 #listaParticipantes li {
-  padding: 0.5rem;
-  background: #f3f4f6;
-  margin-bottom: 0.5rem;
-  border-radius: 6px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background: #fff;
+  padding: 8px 12px;
+  border-radius: 5px;
+  margin-bottom: 8px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .btn-eliminar {
@@ -77,9 +78,4 @@ button:hover {
 
 .btn-eliminar:hover {
   background-color: #dc2626;
-}
-
-.acciones {
-  text-align: center;
-  margin-bottom: 1rem;
 }

@@ -13,10 +13,32 @@ function guardarEnLocalStorage() {
   localStorage.setItem("participantes", JSON.stringify(participantes));
 }
 
+async function cargarMockAPI() {
+  try {
+    const res = await fetch("participantes.json");
+    participantes = await res.json();
+    guardarEnLocalStorage();
+    mostrarParticipantes();
+  } catch {
+    Swal.fire("Error", "No se pudieron cargar datos remotos", "error");
+  }
+}
+
 function eliminarJugador(index) {
-  participantes.splice(index, 1);
-  guardarEnLocalStorage();
-  mostrarParticipantes();
+  Swal.fire({
+    title: "¿Eliminar jugador?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "Cancelar",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      participantes.splice(index, 1);
+      guardarEnLocalStorage();
+      mostrarParticipantes();
+      Swal.fire("Eliminado", "El jugador fue eliminado", "success");
+    }
+  });
 }
 
 function mostrarParticipantes() {
@@ -45,7 +67,11 @@ form.addEventListener("submit", (e) => {
   e.preventDefault();
 
   if (participantes.length >= maxParticipantes) {
-    alert("Se alcanzó el máximo de participantes.");
+    Swal.fire(
+      "Límite alcanzado",
+      "Se llegó al máximo de participantes.",
+      "info"
+    );
     return;
   }
 
@@ -56,7 +82,7 @@ form.addEventListener("submit", (e) => {
   if (!nombre || !categoria || !carnet) return;
 
   if (participantes.some((p) => p.carnet === carnet)) {
-    alert("Ese número de carnet ya fue ingresado.");
+    Swal.fire("Error", "Ese número de carnet ya fue ingresado.", "error");
     return;
   }
 
@@ -64,14 +90,28 @@ form.addEventListener("submit", (e) => {
   guardarEnLocalStorage();
   mostrarParticipantes();
   form.reset();
+
+  Swal.fire("Registrado", `${nombre} fue registrado en el torneo`, "success");
 });
 
 reiniciarBtn.addEventListener("click", () => {
-  if (confirm("¿Estás seguro que querés reiniciar el registro?")) {
-    participantes = [];
-    guardarEnLocalStorage();
-    mostrarParticipantes();
-  }
+  Swal.fire({
+    title: "¿Reiniciar registro?",
+    text: "Se borrarán todos los participantes.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Sí, reiniciar",
+    cancelButtonText: "Cancelar",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      participantes = [];
+      guardarEnLocalStorage();
+      mostrarParticipantes();
+      Swal.fire("Reiniciado", "El registro fue reiniciado", "success");
+    }
+  });
 });
 
-document.addEventListener("DOMContentLoaded", mostrarParticipantes);
+document.addEventListener("DOMContentLoaded", () => {
+  mostrarParticipantes();
+});
